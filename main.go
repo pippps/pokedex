@@ -3,5 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello, World!")
+	stringSlice := cleanInput("hello world")
+	for _, word := range stringSlice {
+		fmt.Println(word)
+	}
 }
