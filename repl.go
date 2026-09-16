@@ -1,6 +1,16 @@
 package main
 
-import "strings"
+import (
+	"fmt"
+	"os"
+	"strings"
+)
+
+type cliCommand struct {
+	name        string
+	description string
+	callback    func() error
+}
 
 func cleanInput(text string) []string {
 	var tempWord string
@@ -23,4 +33,19 @@ func cleanInput(text string) []string {
 		wordSlice = append(wordSlice, tempWord)
 	}
 	return wordSlice
+}
+
+func commandExit() error {
+	fmt.Println("Closing the Pokedex... Goodbye!")
+	os.Exit(0)
+	return nil
+}
+
+func commandHelp() error {
+	fmt.Println("Welcome to the Pokedex!\n" +
+		"Usage:\n" +
+		"\n" +
+		"help: Displays a help message\n" +
+		"exit: Exit the Pokedex")
+	return nil
 }
