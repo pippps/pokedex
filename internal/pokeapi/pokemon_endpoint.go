@@ -6,34 +6,34 @@ import (
 	"net/http"
 )
 
-func (c *Client) ListPokemon(location_area string) (respPokemonList, error) {
-	url := baseURL + "/location-area/" + location_area
+func (c *Client) Pokemon(pokemonName string) (PokemonStruct, error) {
+	url := baseURL + "/pokemon/" + pokemonName
 
 	dat, ok := c.cache.Get(url)
 	if !ok {
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
-			return respPokemonList{}, err
+			return PokemonStruct{}, err
 		}
 
 		resp, err := c.httpClient.Do(req)
 		if err != nil {
-			return respPokemonList{}, err
+			return PokemonStruct{}, err
 		}
 		defer resp.Body.Close()
 
 		dat, err = io.ReadAll(resp.Body)
 		if err != nil {
-			return respPokemonList{}, err
+			return PokemonStruct{}, err
 		}
 		c.cache.Add(url, dat)
 	}
 
-	pokemonsResp := respPokemonList{}
-	err := json.Unmarshal(dat, &pokemonsResp)
+	pokemon := PokemonStruct{}
+	err := json.Unmarshal(dat, &pokemon)
 	if err != nil {
-		return respPokemonList{}, err
+		return PokemonStruct{}, err
 	}
 
-	return pokemonsResp, nil
+	return pokemon, nil
 }

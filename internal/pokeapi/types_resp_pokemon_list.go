@@ -1,6 +1,6 @@
 package pokeapi
 
-type respPokemon struct {
+type respPokemonList struct {
 	PokemonList []struct {
 		Pokemon struct {
 			Name string `json:"name"`
