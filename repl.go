@@ -11,7 +11,7 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, string) error
 }
 type config struct {
 	commands         map[string]cliCommand
@@ -32,10 +32,14 @@ func startRepl(cfg *config) {
 		}
 
 		commandName := words[0]
+		var parameter string
+		if len(words) > 1 {
+			parameter = words[1]
+		}
 
 		command, exists := cfg.commands[commandName]
 		if exists {
-			err := command.callback(cfg)
+			err := command.callback(cfg, parameter)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -91,6 +95,11 @@ func getCommands() map[string]cliCommand {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
+		},
+		"explore": {
+			name:        "explore",
+			description: "list all pokemon of a certain location",
+			callback:    commandExplore,
 		},
 	}
 }
